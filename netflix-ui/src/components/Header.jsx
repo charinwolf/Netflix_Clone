@@ -32,7 +32,6 @@ const Container = styled.div`
     border-radius: 0.2rem;
     font-weight: bolder;
     font-size: 1.05rem;
-    
   }
 `;
 export default Header
