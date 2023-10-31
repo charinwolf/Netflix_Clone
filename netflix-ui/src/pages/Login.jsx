@@ -23,7 +23,7 @@ const Login = () => {
     } catch (error) {
         console.log(error)
     }
-  };
+  };  
 
   onAuthStateChanged(firebaseAuth, (currentUser) => {
     if(currentUser) navigate("/") 
