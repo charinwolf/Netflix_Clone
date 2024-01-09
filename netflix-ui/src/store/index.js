@@ -38,9 +38,8 @@ const getRawData = async ( api, genres, paging )  => {
             data: { results }, 
         } = await axios.get(`${ api }${ paging ? `&page=${i}` : "" }`);
         createArrayFromRawData( results, moviesArray, genres );
-        return moviesArray;
-        
     }
+    return moviesArray;        
 };
 
 export const fetchMovies = createAsyncThunk( "netflix/trending", 
@@ -52,7 +51,18 @@ export const fetchMovies = createAsyncThunk( "netflix/trending",
             `${ TMDB_BASE_URL }/trending/${ type }/week?api_key=${ API_KEY }`, genres, true
         );
     } 
-)
+);
+
+export const fetchDataByGenre = createAsyncThunk( "netflix/moviesByGenres", 
+    async({ genre, type }, thunkaApi) => {
+        const {
+            netflix: {genres},
+        } = thunkaApi.getState();
+        return getRawData(
+            `${ TMDB_BASE_URL }/discover/${ type }?api_key=${ API_KEY }&with_genres=${genre}`, genres
+        );
+    } 
+);
 
 const NetflixSlice = createSlice({
     name: "Netflix",
@@ -63,6 +73,9 @@ const NetflixSlice = createSlice({
             state.genresLoaded = true;
         });
         builder.addCase(fetchMovies.fulfilled, (state, action) => {
+            state.movies = action.payload
+        });
+        builder.addCase(fetchDataByGenre.fulfilled, (state, action) => {
             state.movies = action.payload
         });
     }, 

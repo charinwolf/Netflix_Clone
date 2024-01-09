@@ -33,5 +33,5 @@ const Container = styled.div`
     font-weight: bolder;
     font-size: 1.05rem;
   }
-`;
+`
 export default Header
