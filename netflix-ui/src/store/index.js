@@ -31,7 +31,7 @@ const createArrayFromRawData = ( array, moviesArray, genres ) => {
     });
 }
 
-const getRawData = async ( api, genres, paging )  => {
+const getRawData = async ( api, genres, paging = false )  => {
     const moviesArray = [];
     for (let i = 1; moviesArray.length < 60 && i < 10; i++) {
         const { 
@@ -47,19 +47,19 @@ export const fetchMovies = createAsyncThunk( "netflix/trending",
         const {
             netflix: {genres},
         } = thunkaApi.getState();
-        return getRawData(
+        return getRawData( 
             `${ TMDB_BASE_URL }/trending/${ type }/week?api_key=${ API_KEY }`, genres, true
-        );
+        ); 
     } 
 );
 
 export const fetchDataByGenre = createAsyncThunk( "netflix/moviesByGenres", 
-    async({ genre, type }, thunkaApi) => {
+    async({ type, genre  }, thunkaApi) => {
         const {
             netflix: {genres},
         } = thunkaApi.getState();
         return getRawData(
-            `${ TMDB_BASE_URL }/discover/${ type }?api_key=${ API_KEY }&with_genres=${genre}`, genres
+            `${ TMDB_BASE_URL }/discover/${type}?api_key=${ API_KEY }&with_genres=${genre}`, genres
         );
     } 
 );

@@ -21,12 +21,14 @@ const Movies = () => {
 
     useEffect(() => {
         dispatch(getGenres())
-        // eslint-disable-next-line
+        
     }, []);
 
     useEffect(() => {
-        if( genresLoaded ) dispatch(fetchMovies({ type: 'movies' }));
-    })
+        if( genresLoaded ) {
+         dispatch(fetchMovies({ type: 'all' }));
+        }
+    }, [genresLoaded]); 
 
     window.scroll = () => {
         setIsScrolled(window.pageYOffset === 0 ? false : true);
@@ -43,7 +45,7 @@ const Movies = () => {
         <Navbar isScrolled={ isScrolled } />
       </div>
       <div className="data">
-        <SelectGenre genres={ genres }/>
+        <SelectGenre genres={ genres } type='movie'/>
         {
             movies.length ? <Slider movies={ movies } /> : <NotAvailable />
         }
