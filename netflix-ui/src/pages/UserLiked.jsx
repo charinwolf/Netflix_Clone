@@ -1,25 +1,20 @@
-import { onAuthStateChanged } from 'firebase/auth';
+import axios from 'axios';
+import { onAuthStateChanged } from 'firebase/auth'; 
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { firebaseAuth } from "../utils/firebase-config";
 import Navbar from '../components/Navbar'; 
-import Slider from '../components/Slider';
-import NotAvailable from '../components/NotAvailable';
-import { fetchMovies, getGenres } from '../store';
+import { getUserLikedMovies } from '../store';
 import styled from 'styled-components';
-import SelectGenre from '../components/SelectGenre';
+import Card from '../components/Card';
 
 const UserLiked = () => {
-    const [isScrolled, setIsScrolled] = useState(false);
-     // eslint-disable-next-line
-    const navigate = useNavigate();
-    const genresLoaded = useSelector(( state )  => state.netflix.genresLoaded );
-    const movies = useSelector((state) => state.netflix.movies)
-    const genres = useSelector((state) => state.netflix.genres)
+    const [isScrolled, setIsScrolled] = useState(false); 
     const [email, setEmail] = useState(undefined);
+    const navigate = useNavigate();
     const dispatch = useDispatch();
-
+    const movies = useSelector((state) => state.netflix.movies); 
 
     
     onAuthStateChanged(firebaseAuth, (currentUser) => {
@@ -28,23 +23,13 @@ const UserLiked = () => {
     });
 
     useEffect(() => {
-        if( email ) {
-            dispatch(getUserLikedMovies(email))
-        }
-        
-    }, []);
+        if( email ) { dispatch(getUserLikedMovies(email)) }
+    }, [email]); 
 
-    useEffect(() => {
-        if( genresLoaded ) {
-         dispatch(fetchMovies({ type: 'all' }));
-        }
-    }, [genresLoaded]); 
-
-    window.scroll = () => {
-        setIsScrolled(window.pageYOffset === 0 ? false : true);
+    window.onscroll = () => {
+        setIsScrolled(window.pageYOffset === 0 ? false : true); 
         return () => (window.onscroll = null);
     }
-
     
   return (
     <Container>
@@ -52,16 +37,16 @@ const UserLiked = () => {
       <div className="content flex column">
         <h1>My List</h1>
         <div className="grid flex">
-            { movies.map(( movie, index ) => {
+            { movies && movies?.map(( movie, index ) => {
                 return (
-                    <Card 
+                    <Card  
                         movieData={ movie }
-                        index={index}
-                        key={movie.id}
-                        isLiked={true}
-                        />
-                );
-            })}
+                        index={ index }
+                        key={ movie.id }
+                        isLiked={ true }
+                        />    
+                );  
+            })}  
         </div>
       </div>
     </Container>
