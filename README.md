@@ -10,4 +10,4 @@ React.js, Express.js, Node.js, MongoDB, CSS3.
 
 <h1>Instalación:</h1>
 
-Para levantar la aplicacion, debes escribiren la cónsola o terminal 'npm install' para installar los componentes necesarios. Posteriormente escribe 'npm start' tanto en la parte del front como en el back para levantar la aplicación.   
+Para levantar la aplicacion, debes escribiren la cónsola o terminal 'npm install' para installar los componentes necesarios. Posteriormente escribe 'npm start' tanto en la parte del front como en el back.
